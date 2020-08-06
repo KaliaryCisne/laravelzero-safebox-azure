@@ -1,0 +1,15 @@
+version: '3'
+services:
+  application:
+    container_name: script_boilerplate
+    network_mode: host
+    build:
+      context: .
+      dockerfile: ./docker/build/app/Dockerfile
+    ports:
+    - 8000:8000
+#    volumes:
+#    - ./src/:/var/www
+    devices:
+    - "/dev/fuse:/dev/fuse"
+    privileged: true
