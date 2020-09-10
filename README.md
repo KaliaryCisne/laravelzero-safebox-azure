@@ -13,7 +13,7 @@ Modelo de script feito em LaravelZero, utilizando variáveis armazenadas em um c
     --device /dev/fuse \
     --privileged \ 
     --name script_laravelzero \      
-    laravel-safeboz_application \
+    laravel_safebox_azure_application \
     ./run.sh
 ```
 
