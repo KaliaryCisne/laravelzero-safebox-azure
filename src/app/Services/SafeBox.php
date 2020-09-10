@@ -51,8 +51,11 @@ class SafeBox extends AbstractService
 
             foreach ($variables as $variable) {
                 $url = "https://{$keyVaultName}.vault.azure.net/secrets/{$variable}?api-version=2016-10-01";
-                $response = $this->request('GET', $url, [], $headers);
-                putenv("{$variable}={$response->value}");
+                $response = $this->get($url, $headers);
+
+                $variable = str_replace("-", "_", $variable);
+
+                putenv("{$variable}={$response->body->value}");
             }
         } catch (\Exception $e) {
             echo $e;

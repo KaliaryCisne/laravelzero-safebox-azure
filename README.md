@@ -12,8 +12,8 @@ Modelo de script feito em LaravelZero, utilizando variáveis armazenadas em um c
     docker run --rm \   
     --device /dev/fuse \
     --privileged \ 
-    --name jobsrundeck_regua_ativacao \      
-    boilerplate_scripts_application \
+    --name script_laravelzero \      
+    laravel-safeboz_application \
     ./run.sh
 ```
 

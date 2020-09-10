@@ -18,13 +18,14 @@ abstract class AbstractService
     public const BODY_FORMAT_JSON = 'json';
     public const BODY_FORMAT_FORM = 'form';
 
-
     public function __construct(string $baseURL)
     {
         $this->baseURL = $baseURL;
+        $this->client = $this->getClient();
+
     }
 
-    protected function client(): Client
+    protected function getClient(): Client
     {
         if(!isset($this->client)) {
             $this->client = new Client(['base_uri' => $this->baseURL]);
@@ -43,7 +44,7 @@ abstract class AbstractService
     public function post(string $url, array $data = [], array $headers = [], string $format = self::BODY_FORMAT_DEFAULT) : object
     {
         try {
-            $client = $this->Client();
+
             $options = ['headers' => $headers];
 
             switch($format) {
@@ -57,7 +58,7 @@ abstract class AbstractService
                     $options['body'] = json_encode($data);
             }
 
-            $response = $client->request('POST', $url, $options);
+            $response = $this->client->request('POST', $url, $options);
             return $this->getResponse($response);
         }
         catch (ClientException $e) {
@@ -77,10 +78,10 @@ abstract class AbstractService
     public function get(string $url, array $headers = []) : object
     {
         try {
-            $client = $this->client();
+
             $options = ['headers' => $headers];
 
-            $response = $client->request('GET', $url, $options);
+            $response = $this->client->request('GET', $url, $options);
             return $this->getResponse($response);
         }
         catch (ClientException $e) {
@@ -91,6 +92,28 @@ abstract class AbstractService
         }
     }
 
+    /**
+     * Faz um requisição do tipo PUT
+     * @param string $url
+     * @param array $headers
+     * @return object
+     */
+    public function put(string $url, array $headers = []) : object
+    {
+        try {
+            $options = ['headers' => $headers];
+            $uri = "{$this->baseURL}{$url}";
+
+            $response = $this->client->request('PUT', $uri, $options);
+            return $this->getResponse($response);
+        }
+        catch (ClientException $e) {
+            throw new RuntimeException($e->getResponse()->getBody()->getContents());
+        }
+        catch (Exception $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+    }
 
     /**
      * Monta a resposta que será enviada para o solicitante

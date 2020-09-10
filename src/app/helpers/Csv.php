@@ -4,7 +4,6 @@
 namespace App\helpers;
 
 
-use http\Exception\RuntimeException;
 use Illuminate\Support\Facades\File;
 
 class Csv
@@ -20,7 +19,6 @@ class Csv
 
             //corpo
             $count = 0;
-            $rows = count($data);
             foreach ($data as $row) {
                 $count += 1;
                 $str = implode(",", $row) . PHP_EOL;
@@ -28,8 +26,8 @@ class Csv
             }
             return $count;
         } catch (\Exception $e) {
-            echo "error: " . $e . "\n\n";
-            throw new RuntimeException();
+            echo "error: " . $e->getMessage() . "\n\n";
+            return 0;
         }
     }
 }
